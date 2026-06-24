@@ -34,6 +34,7 @@ const NAV_ITEMS = [
   { to: "/orders", label: "Orders", icon: "◈" },
   { to: "/finance", label: "Finance", icon: "◆" },
   { to: "/reports", label: "Reports", icon: "⚑" },
+  { to: "/notifications", label: "Messages", icon: "✉" },
 ];
 
 export default function Sidebar() {

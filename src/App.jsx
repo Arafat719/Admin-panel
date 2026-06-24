@@ -9,6 +9,7 @@ import Products from "./pages/Products";
 import Orders from "./pages/Orders";
 import Finance from "./pages/Finance";
 import Reports from "./pages/Reports";
+import Notifications from "./pages/Notifications";
 
 export default function App() {
   return (
@@ -63,6 +64,15 @@ export default function App() {
             element={
               <ProtectedRoute>
                 <Reports />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/notifications"
+            element={
+              <ProtectedRoute>
+                <Notifications />
               </ProtectedRoute>
             }
           />

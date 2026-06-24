@@ -1,0 +1,61 @@
+.wmx-notifications {
+  padding: 28px 32px;
+}
+
+.wmx-notif-page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.wmx-notif-page-title {
+  font-family: "Syne", sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.wmx-notif-page-count {
+  font-size: 13px;
+  color: var(--text-muted);
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 4px 12px;
+}
+
+.wmx-notif-subject {
+  font-weight: 600;
+  color: var(--text-primary);
+  max-width: 180px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.wmx-notif-msg-preview {
+  color: var(--text-secondary);
+  max-width: 220px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.wmx-notif-status-badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.wmx-notif-status-badge.read {
+  background: var(--success-dim);
+  color: var(--success);
+}
+
+.wmx-notif-status-badge.unread {
+  background: var(--warning-dim);
+  color: var(--warning);
+}
