@@ -26,22 +26,7 @@
   border-bottom: 1px solid var(--border);
   white-space: nowrap;
   overflow: hidden;
-  flex-shrink: 0;
-}
-
-.wmx-sidebar-logo-icon {
-  width: 28px;
-  height: 28px;
-  flex-shrink: 0;
-  background: var(--accent);
-  border-radius: var(--radius-sm);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 14px;
-  font-weight: 800;
-  color: white;
-  font-family: "Syne", sans-serif;
+  text-decoration: none;
 }
 
 .wmx-sidebar-logo-text {
