@@ -73,7 +73,7 @@ export default function Users() {
   }
 
   async function handleSendMessage(e) {
-    e.preventDefault();
+    if (e && e.preventDefault) e.preventDefault();
     if (!msgSubject.trim() || !msgBody.trim()) {
       setMsgError("Subject and message are required.");
       return;
