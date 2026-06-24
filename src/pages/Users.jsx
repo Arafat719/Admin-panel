@@ -47,6 +47,10 @@ export default function Users() {
 
   useEffect(() => {
     fetchUsers(page, search);
+    const interval = setInterval(() => {
+      fetchUsers(page, search);
+    }, 30000);
+    return () => clearInterval(interval);
   }, [page]);
 
   function handleSearchChange(e) {
@@ -109,6 +113,18 @@ export default function Users() {
     }
   }
 
+  const getOnlineStatus = (lastSeen) => {
+    if (!lastSeen) return { online: false, label: "Never seen" };
+    const diff = Date.now() - new Date(lastSeen).getTime();
+    const minutes = Math.floor(diff / 60000);
+    if (minutes < 5) return { online: true, label: "Online" };
+    if (minutes < 60) return { online: false, label: `${minutes}m ago` };
+    const hours = Math.floor(minutes / 60);
+    if (hours < 24) return { online: false, label: `${hours}h ago` };
+    const days = Math.floor(hours / 24);
+    return { online: false, label: `${days}d ago` };
+  };
+
   return (
     <Layout title="Users">
       <div className="wmx-users">
@@ -128,6 +144,7 @@ export default function Users() {
               <tr>
                 <th>Name</th>
                 <th>Email</th>
+                <th>Status</th>
                 <th>Roles</th>
                 <th>Purchases</th>
                 <th>Joined</th>
@@ -137,23 +154,34 @@ export default function Users() {
             <tbody>
               {loading && (
                 <tr>
-                  <td colSpan={6} className="wmx-table-loading">Loading users...</td>
+                  <td colSpan={7} className="wmx-table-loading">Loading users...</td>
                 </tr>
               )}
               {error && !loading && (
                 <tr>
-                  <td colSpan={6} className="wmx-table-error">{error}</td>
+                  <td colSpan={7} className="wmx-table-error">{error}</td>
                 </tr>
               )}
               {!loading && !error && users.length === 0 && (
                 <tr>
-                  <td colSpan={6} className="wmx-table-empty">No users found.</td>
+                  <td colSpan={7} className="wmx-table-empty">No users found.</td>
                 </tr>
               )}
               {!loading && !error && users.map((user) => (
                 <tr key={user._id}>
                   <td>{user.name || "—"}</td>
                   <td>{user.email}</td>
+                  <td>
+                    {(() => {
+                      const status = getOnlineStatus(user.lastSeen);
+                      return (
+                        <span className={`wmx-status-badge ${status.online ? "wmx-status-online" : "wmx-status-offline"}`}>
+                          <span className="wmx-status-dot" />
+                          {status.label}
+                        </span>
+                      );
+                    })()}
+                  </td>
                   <td>
                     {(user.roles && user.roles.length > 0 ? user.roles : ["buyer"]).map((role) =>
                       role === "blocked" ? (
