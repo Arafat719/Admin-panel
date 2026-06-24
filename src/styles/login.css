@@ -1,0 +1,143 @@
+.wmx-login-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-primary);
+  position: relative;
+  overflow: hidden;
+}
+
+.wmx-login-page::before {
+  content: "";
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(134, 130, 250, 0.06) 0%, transparent 70%);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.wmx-login-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 40px;
+  width: 100%;
+  max-width: 400px;
+  position: relative;
+  z-index: 1;
+}
+
+.wmx-login-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 28px;
+}
+
+.wmx-login-logo-icon {
+  width: 36px;
+  height: 36px;
+  background: var(--accent);
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Syne", sans-serif;
+  font-weight: 800;
+  font-size: 16px;
+  color: white;
+  flex-shrink: 0;
+}
+
+.wmx-login-logo-text {
+  font-family: "Syne", sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.wmx-login-title {
+  font-family: "Syne", sans-serif;
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 6px;
+}
+
+.wmx-login-subtitle {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-bottom: 28px;
+}
+
+.wmx-login-field {
+  margin-bottom: 16px;
+}
+
+.wmx-login-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.wmx-login-input {
+  width: 100%;
+  box-sizing: border-box;
+  background: var(--bg-hover);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  font-size: 14px;
+  outline: none;
+  transition: border-color var(--transition);
+}
+
+.wmx-login-input::placeholder {
+  color: var(--text-muted);
+}
+
+.wmx-login-input:focus {
+  border-color: var(--accent);
+}
+
+.wmx-login-btn {
+  width: 100%;
+  padding: 12px;
+  background: var(--accent);
+  color: white;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  font-weight: 600;
+  font-family: "Syne", sans-serif;
+  cursor: pointer;
+  margin-top: 8px;
+  transition: background var(--transition);
+}
+
+.wmx-login-btn:hover:not(:disabled) {
+  background: var(--accent-hover);
+}
+
+.wmx-login-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.wmx-login-error {
+  font-size: 13px;
+  color: var(--danger);
+  background: var(--danger-dim);
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  margin-top: 12px;
+}

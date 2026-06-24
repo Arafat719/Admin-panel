@@ -1,0 +1,51 @@
+.wmx-finance {
+  padding: 28px 32px;
+}
+
+.wmx-total-revenue-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.wmx-total-revenue-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 8px;
+}
+
+.wmx-total-revenue-value {
+  font-family: "Syne", sans-serif;
+  font-size: 40px;
+  font-weight: 800;
+  color: var(--accent);
+}
+
+.wmx-finance-section-title {
+  font-family: "Syne", sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 12px;
+}
+
+.wmx-finance-error {
+  color: var(--danger);
+  background: var(--danger-dim);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  font-size: 14px;
+}
+
+.wmx-finance-loading {
+  color: var(--text-muted);
+  font-size: 13px;
+  padding: 40px;
+  text-align: center;
+}

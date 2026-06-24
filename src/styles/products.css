@@ -1,0 +1,65 @@
+.wmx-products {
+  padding: 28px 32px;
+}
+
+.wmx-status-badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.wmx-status-badge.approved {
+  background: var(--success-dim);
+  color: var(--success);
+}
+
+.wmx-status-badge.rejected {
+  background: var(--danger-dim);
+  color: var(--danger);
+}
+
+.wmx-status-badge.pending {
+  background: var(--warning-dim);
+  color: var(--warning);
+}
+
+.wmx-confirm-inline {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--warning);
+}
+
+.wmx-confirm-yes {
+  background: transparent;
+  border: 1px solid var(--danger);
+  color: var(--danger);
+  border-radius: var(--radius-sm);
+  padding: 2px 8px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.wmx-confirm-yes:hover {
+  background: var(--danger-dim);
+}
+
+.wmx-confirm-no {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  border-radius: var(--radius-sm);
+  padding: 2px 8px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.wmx-confirm-no:hover {
+  border-color: var(--border-hover);
+}

@@ -1,0 +1,15 @@
+.wmx-orders {
+  padding: 28px 32px;
+}
+
+.wmx-order-id {
+  font-family: monospace;
+  font-size: 12px;
+  color: var(--text-muted);
+  letter-spacing: 0.02em;
+}
+
+.wmx-order-amount {
+  color: var(--accent);
+  font-weight: 600;
+}

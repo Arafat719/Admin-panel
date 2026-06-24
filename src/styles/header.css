@@ -1,0 +1,56 @@
+.wmx-header {
+  position: fixed;
+  top: 0;
+  left: var(--sidebar-width);
+  right: 0;
+  height: var(--header-height);
+  z-index: 99;
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  transition: left var(--transition);
+}
+
+.wmx-header-title {
+  font-family: "Syne", sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.wmx-header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.wmx-header-admin {
+  font-size: 13px;
+  color: var(--text-secondary);
+  padding: 6px 12px;
+  background: var(--accent-dim);
+  border-radius: 20px;
+}
+
+.wmx-header-theme-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition);
+}
+
+.wmx-header-theme-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
