@@ -259,3 +259,159 @@
   font-size: 13px;
   color: var(--text-muted);
 }
+
+/* ── Message button ── */
+.wmx-btn-message {
+  padding: 4px 12px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  background: transparent;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition);
+  margin-left: 6px;
+}
+
+.wmx-btn-message:hover {
+  background: var(--accent-dim);
+}
+
+/* ── Message modal ── */
+.wmx-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+  padding: 24px;
+}
+
+.wmx-modal {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 28px;
+  width: 100%;
+  max-width: 480px;
+}
+
+.wmx-modal-header {
+  margin-bottom: 20px;
+}
+
+.wmx-modal-title {
+  font-family: "Syne", sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.wmx-modal-subtitle {
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.wmx-modal-field {
+  margin-bottom: 16px;
+}
+
+.wmx-modal-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 6px;
+}
+
+.wmx-modal-input,
+.wmx-modal-textarea {
+  width: 100%;
+  box-sizing: border-box;
+  background: var(--bg-hover);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  font-size: 13px;
+  outline: none;
+  transition: border-color var(--transition);
+  font-family: "DM Sans", sans-serif;
+  resize: vertical;
+}
+
+.wmx-modal-input:focus,
+.wmx-modal-textarea:focus {
+  border-color: var(--accent);
+}
+
+.wmx-modal-error {
+  font-size: 13px;
+  color: var(--danger);
+  background: var(--danger-dim);
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  margin-bottom: 16px;
+}
+
+.wmx-modal-success {
+  font-size: 13px;
+  color: var(--success);
+  background: var(--success-dim);
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  margin-bottom: 16px;
+}
+
+.wmx-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.wmx-modal-cancel {
+  padding: 8px 18px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.wmx-modal-cancel:hover:not(:disabled) {
+  border-color: var(--border-hover);
+  color: var(--text-primary);
+}
+
+.wmx-modal-send {
+  padding: 8px 20px;
+  border-radius: var(--radius-sm);
+  border: none;
+  background: var(--accent);
+  color: white;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: "Syne", sans-serif;
+  cursor: pointer;
+  transition: background var(--transition);
+}
+
+.wmx-modal-send:hover:not(:disabled) {
+  background: var(--accent-hover);
+}
+
+.wmx-modal-send:disabled,
+.wmx-modal-cancel:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

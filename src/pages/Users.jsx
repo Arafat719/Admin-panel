@@ -13,6 +13,12 @@ export default function Users() {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const debounceRef = useRef(null);
+  const [messageModal, setMessageModal] = useState(null);
+  const [msgSubject, setMsgSubject] = useState("");
+  const [msgBody, setMsgBody] = useState("");
+  const [msgLoading, setMsgLoading] = useState(false);
+  const [msgError, setMsgError] = useState("");
+  const [msgSuccess, setMsgSuccess] = useState("");
 
   const fetchUsers = useCallback(
     (currentPage, searchTerm) => {
@@ -63,6 +69,43 @@ export default function Users() {
       fetchUsers(page, search);
     } catch (err) {
       setError(err.message);
+    }
+  }
+
+  async function handleSendMessage(e) {
+    e.preventDefault();
+    if (!msgSubject.trim() || !msgBody.trim()) {
+      setMsgError("Subject and message are required.");
+      return;
+    }
+    setMsgLoading(true);
+    setMsgError("");
+    setMsgSuccess("");
+    try {
+      const res = await fetch(`${API_BASE}/admin/users/${messageModal._id}/message`, {
+        method: "POST",
+        headers: {
+          "admin-token": token,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ subject: msgSubject, message: msgBody }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setMsgError(data.error || "Failed to send message.");
+        return;
+      }
+      setMsgSuccess("Message sent successfully!");
+      setMsgSubject("");
+      setMsgBody("");
+      setTimeout(() => {
+        setMessageModal(null);
+        setMsgSuccess("");
+      }, 1500);
+    } catch {
+      setMsgError("Network error. Please try again.");
+    } finally {
+      setMsgLoading(false);
     }
   }
 
@@ -142,6 +185,18 @@ export default function Users() {
                         Block
                       </button>
                     )}
+                    <button
+                      className="wmx-btn-message"
+                      onClick={() => {
+                        setMessageModal(user);
+                        setMsgSubject("");
+                        setMsgBody("");
+                        setMsgError("");
+                        setMsgSuccess("");
+                      }}
+                    >
+                      Message
+                    </button>
                   </td>
                 </tr>
               ))}
@@ -168,6 +223,58 @@ export default function Users() {
             Next
           </button>
         </div>
+        {messageModal && (
+          <div className="wmx-modal-overlay" onClick={() => setMessageModal(null)}>
+            <div className="wmx-modal" onClick={(e) => e.stopPropagation()}>
+              <div className="wmx-modal-header">
+                <div className="wmx-modal-title">Message User</div>
+                <div className="wmx-modal-subtitle">{messageModal.name} — {messageModal.email}</div>
+              </div>
+
+              <div className="wmx-modal-field">
+                <label className="wmx-modal-label">Subject</label>
+                <input
+                  className="wmx-modal-input"
+                  type="text"
+                  placeholder="Enter subject..."
+                  value={msgSubject}
+                  onChange={(e) => setMsgSubject(e.target.value)}
+                />
+              </div>
+
+              <div className="wmx-modal-field">
+                <label className="wmx-modal-label">Message</label>
+                <textarea
+                  className="wmx-modal-textarea"
+                  placeholder="Write your message..."
+                  rows={6}
+                  value={msgBody}
+                  onChange={(e) => setMsgBody(e.target.value)}
+                />
+              </div>
+
+              {msgError && <div className="wmx-modal-error">{msgError}</div>}
+              {msgSuccess && <div className="wmx-modal-success">{msgSuccess}</div>}
+
+              <div className="wmx-modal-actions">
+                <button
+                  className="wmx-modal-cancel"
+                  onClick={() => setMessageModal(null)}
+                  disabled={msgLoading}
+                >
+                  Cancel
+                </button>
+                <button
+                  className="wmx-modal-send"
+                  onClick={handleSendMessage}
+                  disabled={msgLoading}
+                >
+                  {msgLoading ? "Sending..." : "Send Message"}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </Layout>
   );
