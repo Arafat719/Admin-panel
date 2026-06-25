@@ -460,3 +460,41 @@
   opacity: 0.5;
   cursor: not-allowed;
 }
+
+@media (max-width: 768px) {
+  .wmx-users {
+    padding: 16px;
+  }
+
+  .wmx-table-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .wmx-table {
+    min-width: 700px;
+  }
+
+  .wmx-pagination {
+    justify-content: center;
+  }
+
+  .wmx-modal {
+    padding: 20px 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .wmx-users {
+    padding: 12px;
+  }
+
+  .wmx-search-input {
+    width: 100%;
+  }
+
+  .wmx-page-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}

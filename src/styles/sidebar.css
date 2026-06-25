@@ -139,3 +139,72 @@
 .wmx-sidebar:hover .wmx-sidebar-logout-label {
   opacity: 1;
 }
+
+/* ── Hamburger button (mobile only) ── */
+.wmx-sidebar-hamburger {
+  display: none;
+  position: fixed;
+  top: 14px;
+  left: 16px;
+  z-index: 200;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  width: 36px;
+  height: 36px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  cursor: pointer;
+  padding: 0;
+}
+
+.wmx-sidebar-hamburger span {
+  display: block;
+  width: 18px;
+  height: 2px;
+  background: var(--text-primary);
+  border-radius: 2px;
+  transition: all var(--transition);
+}
+
+/* ── Backdrop (mobile only) ── */
+.wmx-sidebar-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 99;
+}
+
+/* ── Mobile breakpoint ── */
+@media (max-width: 768px) {
+  .wmx-sidebar {
+    transform: translateX(-100%);
+    width: var(--sidebar-expanded) !important;
+    transition: transform var(--transition);
+  }
+
+  .wmx-sidebar:hover {
+    width: var(--sidebar-expanded) !important;
+  }
+
+  .wmx-sidebar-logo-text,
+  .wmx-sidebar-link-label,
+  .wmx-sidebar-logout-label {
+    opacity: 1 !important;
+  }
+
+  .wmx-sidebar-mobile-open {
+    transform: translateX(0);
+  }
+
+  .wmx-sidebar-hamburger {
+    display: flex;
+  }
+
+  .wmx-sidebar-backdrop {
+    display: block;
+  }
+}

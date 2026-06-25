@@ -5,7 +5,7 @@ import { API_BASE } from "../config";
 import "../styles/users.css";
 
 export default function Users() {
-  const { token } = useAdmin();
+  const { token, reloadTick } = useAdmin();
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -47,11 +47,7 @@ export default function Users() {
 
   useEffect(() => {
     fetchUsers(page, search);
-    const interval = setInterval(() => {
-      fetchUsers(page, search);
-    }, 30000);
-    return () => clearInterval(interval);
-  }, [page]);
+  }, [page, reloadTick]);
 
   function handleSearchChange(e) {
     const value = e.target.value;
@@ -147,6 +143,7 @@ export default function Users() {
                 <th>Status</th>
                 <th>Roles</th>
                 <th>Purchases</th>
+                <th>Listed</th>
                 <th>Joined</th>
                 <th>Actions</th>
               </tr>
@@ -154,17 +151,17 @@ export default function Users() {
             <tbody>
               {loading && (
                 <tr>
-                  <td colSpan={7} className="wmx-table-loading">Loading users...</td>
+                  <td colSpan={8} className="wmx-table-loading">Loading users...</td>
                 </tr>
               )}
               {error && !loading && (
                 <tr>
-                  <td colSpan={7} className="wmx-table-error">{error}</td>
+                  <td colSpan={8} className="wmx-table-error">{error}</td>
                 </tr>
               )}
               {!loading && !error && users.length === 0 && (
                 <tr>
-                  <td colSpan={7} className="wmx-table-empty">No users found.</td>
+                  <td colSpan={8} className="wmx-table-empty">No users found.</td>
                 </tr>
               )}
               {!loading && !error && users.map((user) => (
@@ -192,6 +189,7 @@ export default function Users() {
                     )}
                   </td>
                   <td>{user.purchasedProductsCount ?? "—"}</td>
+                  <td>{user.listedProductsCount ?? 0}</td>
                   <td>
                     {user.date
                       ? new Date(user.date).toLocaleDateString()

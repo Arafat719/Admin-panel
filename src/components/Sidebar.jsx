@@ -1,5 +1,5 @@
-import React from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { NavLink, useNavigate, useLocation } from "react-router-dom";
 import { useAdmin } from "../context/AdminContext";
 import "../styles/sidebar.css";
 
@@ -40,6 +40,21 @@ const NAV_ITEMS = [
 export default function Sidebar() {
   const { logout } = useAdmin();
   const navigate = useNavigate();
+  const location = useLocation();
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  useEffect(() => {
+    setMobileOpen(false);
+  }, [location.pathname]);
+
+  useEffect(() => {
+    if (mobileOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => { document.body.style.overflow = ""; };
+  }, [mobileOpen]);
 
   function handleLogout() {
     logout();
@@ -47,33 +62,52 @@ export default function Sidebar() {
   }
 
   return (
-    <aside className="wmx-sidebar">
-      <div className="wmx-sidebar-logo">
-        <WmxLogo size={28} />
-        <span className="wmx-sidebar-logo-text">WebMarketX Admin</span>
-      </div>
+    <>
+      <button
+        className="wmx-sidebar-hamburger"
+        onClick={() => setMobileOpen((v) => !v)}
+        aria-label="Toggle sidebar"
+      >
+        <span />
+        <span />
+        <span />
+      </button>
 
-      <nav className="wmx-sidebar-nav">
-        {NAV_ITEMS.map((item) => (
-          <NavLink
-            key={item.to}
-            to={item.to}
-            className={({ isActive }) =>
-              "wmx-sidebar-link" + (isActive ? " active" : "")
-            }
-          >
-            <span className="wmx-sidebar-link-icon">{item.icon}</span>
-            <span className="wmx-sidebar-link-label">{item.label}</span>
-          </NavLink>
-        ))}
-      </nav>
+      {mobileOpen && (
+        <div
+          className="wmx-sidebar-backdrop"
+          onClick={() => setMobileOpen(false)}
+        />
+      )}
 
-      <div className="wmx-sidebar-bottom">
-        <button className="wmx-sidebar-logout" onClick={handleLogout}>
-          <span className="wmx-sidebar-link-icon">⏻</span>
-          <span className="wmx-sidebar-logout-label">Logout</span>
-        </button>
-      </div>
-    </aside>
+      <aside className={`wmx-sidebar${mobileOpen ? " wmx-sidebar-mobile-open" : ""}`}>
+        <div className="wmx-sidebar-logo">
+          <WmxLogo size={28} />
+          <span className="wmx-sidebar-logo-text">WebMarketX Admin</span>
+        </div>
+
+        <nav className="wmx-sidebar-nav">
+          {NAV_ITEMS.map((item) => (
+            <NavLink
+              key={item.to}
+              to={item.to}
+              className={({ isActive }) =>
+                "wmx-sidebar-link" + (isActive ? " active" : "")
+              }
+            >
+              <span className="wmx-sidebar-link-icon">{item.icon}</span>
+              <span className="wmx-sidebar-link-label">{item.label}</span>
+            </NavLink>
+          ))}
+        </nav>
+
+        <div className="wmx-sidebar-bottom">
+          <button className="wmx-sidebar-logout" onClick={handleLogout}>
+            <span className="wmx-sidebar-link-icon">⏻</span>
+            <span className="wmx-sidebar-logout-label">Logout</span>
+          </button>
+        </div>
+      </aside>
+    </>
   );
 }

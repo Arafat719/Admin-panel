@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useEffect, useState, useCallback } from "react";
 import { API_BASE, ADMIN_TOKEN_KEY } from "../config";
 
 export const AdminContext = createContext(null);
@@ -8,6 +8,26 @@ export function AdminProvider({ children }) {
   const [token, setToken] = useState(null);
   const [theme, setTheme] = useState("dark");
   const [authLoading, setAuthLoading] = useState(true);
+  const [countdown, setCountdown] = useState(30);
+  const [reloadTick, setReloadTick] = useState(0);
+
+  const triggerReload = useCallback(() => {
+    setReloadTick((t) => t + 1);
+    setCountdown(30);
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCountdown((prev) => {
+        if (prev <= 1) {
+          setReloadTick((t) => t + 1);
+          return 30;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
 
   useEffect(() => {
     const savedTheme = localStorage.getItem("wmx_admin_theme") || "dark";
@@ -63,7 +83,7 @@ export function AdminProvider({ children }) {
   }
 
   return (
-    <AdminContext.Provider value={{ admin, token, theme, authLoading, login, logout, toggleTheme }}>
+    <AdminContext.Provider value={{ admin, token, theme, authLoading, login, logout, toggleTheme, countdown, reloadTick, triggerReload }}>
       {children}
     </AdminContext.Provider>
   );

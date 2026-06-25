@@ -3,12 +3,18 @@ import { useAdmin } from "../context/AdminContext";
 import "../styles/header.css";
 
 export default function Header({ title }) {
-  const { admin, theme, toggleTheme } = useAdmin();
+  const { admin, theme, toggleTheme, countdown, triggerReload } = useAdmin();
 
   return (
     <header className="wmx-header">
       <h1 className="wmx-header-title">{title}</h1>
       <div className="wmx-header-right">
+        <div className="wmx-reload-indicator">
+          <span className="wmx-reload-countdown">Auto-reload in {countdown}s</span>
+          <button className="wmx-reload-btn" onClick={triggerReload} title="Reload now">
+            ↻
+          </button>
+        </div>
         <span className="wmx-header-admin">
           {admin?.name || admin?.email || "Admin"}
         </span>
