@@ -3,6 +3,7 @@ import Layout from "../components/Layout";
 import { useAdmin } from "../context/AdminContext";
 import { API_BASE } from "../config";
 import "../styles/dashboard.css";
+import PlatformAnalytics from "../components/PlatformAnalytics";
 
 const STAT_KEYS = [
   { key: "users", label: "Users", icon: "◉", modifier: "users" },
@@ -114,21 +115,7 @@ export default function Dashboard() {
               ))}
             </div>
 
-            <div className="wmx-chart-section">
-              <div className="wmx-chart-title">Platform Overview</div>
-              <div className="wmx-bar-chart">
-                {buildChartData(stats).map((item) => (
-                  <div className="wmx-bar-wrap" key={item.label}>
-                    <div
-                      className="wmx-bar"
-                      style={{ height: item.height + "px" }}
-                      title={item.value.toLocaleString()}
-                    />
-                    <span className="wmx-bar-label">{item.label}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
+            <PlatformAnalytics stats={stats} />
           </>
         )}
       </div>
