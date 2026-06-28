@@ -9,6 +9,9 @@ import {
   ArcElement,
   Tooltip,
   Filler,
+  LineController,
+  BarController,
+  DoughnutController,
 } from "chart.js";
 import "./PlatformAnalytics.css";
 
@@ -20,7 +23,10 @@ Chart.register(
   BarElement,
   ArcElement,
   Tooltip,
-  Filler
+  Filler,
+  LineController,
+  BarController,
+  DoughnutController
 );
 
 const TIME_RANGES = ["7d", "30d", "All time"];
