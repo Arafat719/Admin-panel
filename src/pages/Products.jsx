@@ -1,9 +1,137 @@
-import React, { useEffect, useRef, useState, useCallback } from "react";
+import React, { useEffect, useRef, useState, useCallback, useMemo } from "react";
 import Layout from "../components/Layout";
 import { useAdmin } from "../context/AdminContext";
 import { API_BASE } from "../config";
 import "../styles/users.css";
 import "../styles/products.css";
+
+const HIDDEN_DETAIL_KEYS = new Set([
+  "_id",
+  "id",
+  "__v",
+  "title",
+  "name",
+  "description",
+  "price",
+  "status",
+  "seller",
+  "category",
+  "stock",
+  "quantity",
+  "images",
+  "image",
+  "createdAt",
+  "updatedAt",
+]);
+
+function ProductDetailModal({ product, onClose }) {
+  if (!product) return null;
+
+  const images = Array.isArray(product.images)
+    ? product.images
+    : product.image
+    ? [product.image]
+    : [];
+  const [heroImage, ...thumbImages] = images;
+
+  const extraEntries = Object.entries(product).filter(
+    ([key, value]) =>
+      !HIDDEN_DETAIL_KEYS.has(key) &&
+      value !== null &&
+      value !== undefined &&
+      typeof value !== "object"
+  );
+
+  return (
+    <div className="wmx-modal-overlay" onClick={onClose}>
+      <div className="wmx-modal wmx-detail-modal" onClick={(e) => e.stopPropagation()}>
+        <button className="wmx-modal-close" onClick={onClose} aria-label="Close">
+          ×
+        </button>
+
+        {heroImage && (
+          <div className="wmx-detail-hero">
+            <img src={heroImage} alt={product.title || product.name || "product"} />
+          </div>
+        )}
+
+        <div className="wmx-detail-body">
+          <div className="wmx-detail-top">
+            <div>
+              <div className="wmx-modal-title">{product.title || product.name || "Product Details"}</div>
+              <div className="wmx-modal-subtitle">ID: {product._id}</div>
+            </div>
+            <span className={`wmx-status-badge ${product.status || "pending"}`}>
+              {product.status || "pending"}
+            </span>
+          </div>
+
+          <div className="wmx-detail-price">${(product.price ?? 0).toLocaleString()}</div>
+
+          {thumbImages.length > 0 && (
+            <div className="wmx-detail-thumbs">
+              {thumbImages.map((src, i) => (
+                <img key={i} src={src} alt={`${product.title || product.name || "product"} ${i + 2}`} />
+              ))}
+            </div>
+          )}
+
+          <div className="wmx-detail-chips">
+            {product.category && (
+              <div className="wmx-detail-chip">
+                <span className="wmx-modal-label">Category</span>
+                <span>{product.category}</span>
+              </div>
+            )}
+            {(product.stock ?? product.quantity) !== undefined && (
+              <div className="wmx-detail-chip">
+                <span className="wmx-modal-label">Stock</span>
+                <span>{product.stock ?? product.quantity}</span>
+              </div>
+            )}
+            <div className="wmx-detail-chip">
+              <span className="wmx-modal-label">Seller</span>
+              <span>{product.seller?.name || product.seller?.email || product.seller || "—"}</span>
+            </div>
+            {product.createdAt && (
+              <div className="wmx-detail-chip">
+                <span className="wmx-modal-label">Created</span>
+                <span>{new Date(product.createdAt).toLocaleString()}</span>
+              </div>
+            )}
+          </div>
+
+          {product.description && (
+            <div className="wmx-detail-section">
+              <label className="wmx-modal-label">Description</label>
+              <div className="wmx-modal-detail-description">{product.description}</div>
+            </div>
+          )}
+
+          {extraEntries.length > 0 && (
+            <div className="wmx-detail-section">
+              <label className="wmx-modal-label">Additional Info</label>
+              <div className="wmx-detail-extra-grid">
+                {extraEntries.map(([key, value]) => (
+                  <div className="wmx-detail-extra-row" key={key}>
+                    <span className="wmx-detail-extra-key">{key}</span>
+                    <span>{String(value)}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+
+        <div className="wmx-modal-actions wmx-detail-footer">
+          <button className="wmx-modal-cancel" onClick={onClose}>
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export default function Products() {
   const { token } = useAdmin();
@@ -14,6 +142,9 @@ export default function Products() {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [confirmDelete, setConfirmDelete] = useState(null);
+  const [sortBy, setSortBy] = useState(null);
+  const [sortDir, setSortDir] = useState("asc");
+  const [detailProduct, setDetailProduct] = useState(null);
   const debounceRef = useRef(null);
 
   const fetchProducts = useCallback(
@@ -86,6 +217,42 @@ export default function Products() {
     }
   }
 
+  function handleSort(field) {
+    if (sortBy === field) {
+      setSortDir((d) => (d === "asc" ? "desc" : "asc"));
+    } else {
+      setSortBy(field);
+      setSortDir("asc");
+    }
+  }
+
+  const sortedProducts = useMemo(() => {
+    if (!sortBy) return products;
+    const list = [...products];
+    list.sort((a, b) => {
+      let av, bv;
+      if (sortBy === "title") {
+        av = (a.title || a.name || "").toLowerCase();
+        bv = (b.title || b.name || "").toLowerCase();
+      } else if (sortBy === "price") {
+        av = a.price ?? 0;
+        bv = b.price ?? 0;
+      } else {
+        av = a.status || "pending";
+        bv = b.status || "pending";
+      }
+      if (av < bv) return sortDir === "asc" ? -1 : 1;
+      if (av > bv) return sortDir === "asc" ? 1 : -1;
+      return 0;
+    });
+    return list;
+  }, [products, sortBy, sortDir]);
+
+  function sortArrow(field) {
+    if (sortBy !== field) return null;
+    return sortDir === "asc" ? " ▲" : " ▼";
+  }
+
   return (
     <Layout title="Products">
       <div className="wmx-products">
@@ -103,10 +270,16 @@ export default function Products() {
           <table className="wmx-table">
             <thead>
               <tr>
-                <th>Title</th>
+                <th className="wmx-sortable-th" onClick={() => handleSort("title")}>
+                  Title{sortArrow("title")}
+                </th>
                 <th>Seller</th>
-                <th>Price</th>
-                <th>Status</th>
+                <th className="wmx-sortable-th" onClick={() => handleSort("price")}>
+                  Price{sortArrow("price")}
+                </th>
+                <th className="wmx-sortable-th" onClick={() => handleSort("status")}>
+                  Status{sortArrow("status")}
+                </th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -126,7 +299,7 @@ export default function Products() {
                   <td colSpan={5} className="wmx-table-empty">No products found.</td>
                 </tr>
               )}
-              {!loading && !error && products.map((product) => (
+              {!loading && !error && sortedProducts.map((product) => (
                 <tr key={product._id}>
                   <td>{product.title || product.name || "—"}</td>
                   <td>{product.seller?.name || product.seller || "—"}</td>
@@ -165,6 +338,12 @@ export default function Products() {
                           <option value="rejected">Rejected</option>
                         </select>
                         <button
+                          className="wmx-btn-details"
+                          onClick={() => setDetailProduct(product)}
+                        >
+                          Details
+                        </button>
+                        <button
                           className="wmx-btn-remove"
                           onClick={() => setConfirmDelete(product._id)}
                         >
@@ -198,6 +377,8 @@ export default function Products() {
             Next
           </button>
         </div>
+
+        <ProductDetailModal product={detailProduct} onClose={() => setDetailProduct(null)} />
       </div>
     </Layout>
   );
